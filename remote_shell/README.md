@@ -1,6 +1,6 @@
 # Objective
 
-Allows you to open a remote shell (for remote control) by connecting to a computer that has opened a netcat server as follows: \\
+Allows you to open a remote shell (for remote control) by connecting to a computer that has opened a netcat server as follows:  
 `nc-k-l 4444`
 
 # Settings
