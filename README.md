@@ -1,6 +1,6 @@
 # Attiny85Payloads
 
-This repository contains several payloads/exploits to transform your Attiny85 into bad USB (rubber ducky).
+This repository contains several payloads/exploits to transform your Attiny85 into BadUSB (rubber ducky).
 
 # Disclaimer
 
