@@ -17,4 +17,5 @@ The data will be sent to the URL specified during make with the following powers
 # Download payload settings
 
 * __URL__ : Direct download URL to the ``out.vbs`` script.
+* __EXE_FILENAME__ : tmp.vbs
 * __STARTUP__ : Not set.
