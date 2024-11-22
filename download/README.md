@@ -1,0 +1,1 @@
+This directory contains exploits that can be used with the payload to download programs to the target computer: [https://github.com/jzyra/Attiny85Payloads/tree/main/payloads/download](https://github. com/jzyra/Attiny85Payloads/tree/main/payloads/download)
