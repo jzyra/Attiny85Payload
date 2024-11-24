@@ -2,7 +2,7 @@
 
 Allows you to open a remote shell (for remote control) by connecting to a computer that has opened a netcat server as follows:  
 ``nc -k -l 4444``  
-This code can be made persistent thanks to the payload: [https://github.com/jzyra/Attiny85Payloads/tree/main/payloads/download](https://github.com/jzyra/Attiny85Payloads/tree/main/payloads/ download)
+This code can be made persistent thanks to the payload: [https://github.com/jzyra/Attiny85Payloads/tree/main/payloads/download](https://github.com/jzyra/Attiny85Payloads/tree/main/payloads/download)
 
 # Build
 
