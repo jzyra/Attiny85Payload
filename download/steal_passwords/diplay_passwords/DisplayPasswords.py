@@ -34,11 +34,11 @@ class DisplayPasswords:
 
   @staticmethod
   def __get_all_keys(obj):
-    return obj["chrome"]["keys"]
+    return obj["browser"]["chrome"]["keys"]
 
   @staticmethod
   def __get_all_contents(obj):
-    return obj["chrome"]["contents"]
+    return obj["browser"]["chrome"]["contents"]
 
   @staticmethod
   def __get_contents_wifi(obj):

